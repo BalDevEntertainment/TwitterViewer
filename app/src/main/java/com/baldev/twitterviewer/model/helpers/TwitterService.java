@@ -1,26 +1,26 @@
 package com.baldev.twitterviewer.model.helpers;
 
 
+import com.baldev.twitterviewer.model.DTOs.TwitterToken;
+
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
 
 public interface TwitterService {
 
-	String REST_BASE_URL = "services/rest";
+	@Headers({
+			"Authorization: Basic VnZsaFBJRE91dVA4RU9HNWJZdTU4NGlrejo5MlcyMVVsTjJRTkhmZzhEZDNuUzFPWkRkcVhzNzBydEM0dE93SkxObjBzc2RlaWxFbw==",
+			"Content-Type: application/x-www-form-urlencoded;charset=UTF-8"
+	})
+	@POST("oauth2/token")
+	Observable<TwitterToken> authenticate(@Body RequestBody twitterAuthentication);
 
-	String QRY_PARAM_FORMAT = "format=";
-	String QRY_PARAM_JSON_CALLBACK = "nojsoncallback=";
-	String QRY_PARAM_PER_PAGE = "per_page=";
-
-	String FORMAT_JSON = "json";
-	String JSON_CALLBACK_UNFORMATTED = "1";
-	String PER_PAGE_QTY = "30";
-
-	String FORMATTED_URL = REST_BASE_URL + "?" + QRY_PARAM_FORMAT + FORMAT_JSON + "&" + QRY_PARAM_JSON_CALLBACK + JSON_CALLBACK_UNFORMATTED +
-			"&" + QRY_PARAM_PER_PAGE + PER_PAGE_QTY;
-
-	@GET(FORMATTED_URL)
+	@GET("1.1/search/tweets.json")
 	Observable<Object> getSomething(@Query("method") String method, @Query("api_key") String apiKey, @Query("page") int page);
 
 }

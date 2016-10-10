@@ -13,5 +13,6 @@ public interface MainMVP {
 		@Override
 		void onRefresh();
 
+		void authenticate();
 	}
 }

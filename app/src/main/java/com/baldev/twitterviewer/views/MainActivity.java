@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View, OnQueryText
 		this.setupAdapter();
 		this.setupSearchView();
 		this.setupSwipeRefreshLayout();
+		this.presenter.authenticate();
 	}
 
 	protected void setupComponent() {
