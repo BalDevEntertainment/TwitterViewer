@@ -2,6 +2,8 @@ package com.baldev.twitterviewer.presenters;
 
 import android.util.Log;
 
+import com.baldev.twitterviewer.model.DTOs.SearchResponse;
+import com.baldev.twitterviewer.model.DTOs.Tweet;
 import com.baldev.twitterviewer.model.DTOs.TwitterToken;
 import com.baldev.twitterviewer.mvp.DataModel;
 import com.baldev.twitterviewer.mvp.MainMVP;
@@ -22,11 +24,12 @@ import rx.subjects.PublishSubject;
 
 public class MainPresenter implements MainMVP.Presenter {
 
-	private static final int DELAY = 500;
+	private static final int DELAY = 400;
 
 	private final View view;
 	private final DataModel dataModel;
 	private List<Subscription> subscriptions = new ArrayList<>();
+	//TODO inject this
 	private PublishSubject<String> searchResultsSubject = PublishSubject.create();
 
 	@Inject
@@ -59,7 +62,7 @@ public class MainPresenter implements MainMVP.Presenter {
 				.flatMap(searchTerm -> dataModel.getTweetsBySearchTerm(getAccessToken(), searchTerm))
 				//Update UI
 				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new Observer<Object>() {
+				.subscribe(new Observer<SearchResponse>() {
 
 					@Override
 					public void onCompleted() {
@@ -70,8 +73,8 @@ public class MainPresenter implements MainMVP.Presenter {
 					}
 
 					@Override
-					public void onNext(Object cities) {
-						Log.d("test", "onNext ");
+					public void onNext(SearchResponse searchResponse) {
+						Log.d("test", "on Next");
 						//handleSearchResults(cities);
 					}
 				});

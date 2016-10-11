@@ -1,6 +1,7 @@
 package com.baldev.twitterviewer.model.helpers;
 
 
+import com.baldev.twitterviewer.model.DTOs.SearchResponse;
 import com.baldev.twitterviewer.model.DTOs.TwitterToken;
 
 import okhttp3.RequestBody;
@@ -23,7 +24,7 @@ public interface TwitterService {
 	Single<TwitterToken> authenticate(@Body RequestBody twitterAuthentication);
 
 	@GET("1.1/search/tweets.json")
-	Observable<Object> getTweetsBySearchTerm(@Header("Authorization") String accessToken,
-											 @Query("q") String queryTerm);
+	Observable<SearchResponse> getTweetsBySearchTerm(@Header("Authorization") String accessToken,
+													 @Query("q") String queryTerm);
 
 }

@@ -3,6 +3,7 @@ package com.baldev.twitterviewer.model;
 import android.content.Context;
 
 import com.baldev.twitterviewer.BuildConfig;
+import com.baldev.twitterviewer.model.DTOs.SearchResponse;
 import com.baldev.twitterviewer.model.DTOs.TwitterAuthentication;
 import com.baldev.twitterviewer.model.DTOs.TwitterAuthentication.GrantType;
 import com.baldev.twitterviewer.model.DTOs.TwitterToken;
@@ -42,7 +43,7 @@ public class DataManager implements DataModel {
 	}
 
 	@Override
-	public Observable<Object> getTweetsBySearchTerm(TwitterToken accessToken, String queryTerm) {
+	public Observable<SearchResponse> getTweetsBySearchTerm(TwitterToken accessToken, String queryTerm) {
 		String formattedAccessToken = getFormattedAccessToken(accessToken);
 		return twitterService.getTweetsBySearchTerm(formattedAccessToken, queryTerm);
 	}
