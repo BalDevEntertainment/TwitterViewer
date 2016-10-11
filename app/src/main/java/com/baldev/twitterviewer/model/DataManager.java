@@ -1,7 +1,6 @@
 package com.baldev.twitterviewer.model;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 
 import com.baldev.twitterviewer.BuildConfig;
 import com.baldev.twitterviewer.model.DTOs.TwitterAuthentication;
@@ -19,13 +18,10 @@ import javax.inject.Singleton;
 import rx.Observable;
 import rx.Single;
 
-import static android.icu.text.UnicodeSet.from;
-
 @Singleton
 public class DataManager implements DataModel {
 
 	private static final String API_KEY = BuildConfig.TWITTER_API_KEY; //Change for provided API KEY, used to avoid publishing API key on repository.
-	private static final String GET_SOMETHING = "";
 
 	//TODO inject dependencies
 	private static TwitterService twitterService = TwitterAPIHelper.getInstance().create(TwitterService.class);
@@ -46,8 +42,9 @@ public class DataManager implements DataModel {
 	}
 
 	@Override
-	public Observable<Object> getSomething(String accessToken) {
-		return twitterService.getSomething(accessToken, GET_SOMETHING, API_KEY);
+	public Observable<Object> getTweetsBySearchTerm(TwitterToken accessToken, String queryTerm) {
+		String formattedAccessToken = getFormattedAccessToken(accessToken);
+		return twitterService.getTweetsBySearchTerm(formattedAccessToken, queryTerm);
 	}
 
 	@Override
@@ -60,5 +57,11 @@ public class DataManager implements DataModel {
 	@Override
 	public void saveAccessToken(String accessToken) {
 		preferencesManager.saveAccessToken(this.context, accessToken);
+	}
+
+	private String getFormattedAccessToken(TwitterToken accessToken) {
+		String tokenType = accessToken.getTokenType().getValue();
+		String accessTokenValue = accessToken.getAccessToken();
+		return String.format("%s %s", tokenType, accessTokenValue);
 	}
 }

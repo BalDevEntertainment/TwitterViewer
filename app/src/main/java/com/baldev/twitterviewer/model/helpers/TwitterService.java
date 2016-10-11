@@ -23,6 +23,7 @@ public interface TwitterService {
 	Single<TwitterToken> authenticate(@Body RequestBody twitterAuthentication);
 
 	@GET("1.1/search/tweets.json")
-	Observable<Object> getSomething(@Header("Authorization") String accessToken, @Query("method") String method, @Query("api_key") String apiKey);
+	Observable<Object> getTweetsBySearchTerm(@Header("Authorization") String accessToken,
+											 @Query("q") String queryTerm);
 
 }

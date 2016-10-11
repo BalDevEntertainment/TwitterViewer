@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public final class TwitterAPIHelper {
 
 	private static final String BASE_URL = "https://api.twitter.com/";
-	private static final Level LOG_LEVEL = Level.BODY;
+	private static final Level LOG_LEVEL = Level.BASIC;
 	private static Retrofit retrofit;
 
 	private TwitterAPIHelper() {

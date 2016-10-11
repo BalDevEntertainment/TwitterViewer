@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
+import android.util.Log;
 
 import com.baldev.twitterviewer.R;
 import com.baldev.twitterviewer.components.DaggerMainComponent;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View, OnQueryText
 		this.setupAdapter();
 		this.setupSearchView();
 		this.setupSwipeRefreshLayout();
-		this.presenter.getTweets();
+		//this.presenter.getTweetsBySearchTerm();
 	}
 
 	protected void setupComponent() {
@@ -104,6 +105,19 @@ public class MainActivity extends AppCompatActivity implements View, OnQueryText
 
 	@Override
 	public boolean onQueryTextChange(final String query) {
+		this.presenter.getTweetsBySearchTerm(query);
 		return true;
+	}
+
+	@Override
+	public void onLoadCompleted() {
+		Log.d("Test", "On Load Completed");
+		//TODO do something
+	}
+
+	@Override
+	public void onLoadFailed() {
+		Log.d("Test", "On Load failed");
+		//TODO do something
 	}
 }

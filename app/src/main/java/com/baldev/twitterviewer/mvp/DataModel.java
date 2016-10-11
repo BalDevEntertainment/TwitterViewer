@@ -1,7 +1,5 @@
 package com.baldev.twitterviewer.mvp;
 
-import android.content.Context;
-
 import com.baldev.twitterviewer.model.DTOs.TwitterToken;
 
 import rx.Observable;
@@ -13,7 +11,7 @@ public interface DataModel {
 
 	Single<TwitterToken> authenticate();
 
-	Observable<Object> getSomething(String accessToken);
+	Observable<Object> getTweetsBySearchTerm(TwitterToken accessToken, String queryTerm);
 
 	void saveAccessToken(String accessToken);
 }
