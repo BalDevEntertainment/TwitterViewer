@@ -4,10 +4,11 @@
     <dimen name="spacing_normal">16dp</dimen>
     <dimen name="spacing_big">32dp</dimen>
     <dimen name="collapsible_header_size">240dp</dimen>
-    <dimen name="list_item_height">88dp</dimen>
+    <dimen name="list_item_height">72dp</dimen>
     <dimen name="list_item_picture_height">40dp</dimen>
     <dimen name="list_item_picture_width">40dp</dimen>
 
     <dimen name="font_size_small">12sp</dimen>
     <dimen name="font_size_medium">16sp</dimen>
+    <dimen name="photo_size">120dp</dimen>
 </resources>

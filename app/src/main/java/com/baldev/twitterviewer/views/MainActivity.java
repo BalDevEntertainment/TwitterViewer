@@ -14,11 +14,15 @@ import android.util.Log;
 
 import com.baldev.twitterviewer.R;
 import com.baldev.twitterviewer.components.DaggerMainComponent;
+import com.baldev.twitterviewer.model.DTOs.Tweet;
 import com.baldev.twitterviewer.modules.AppModule;
 import com.baldev.twitterviewer.modules.MainModule;
 import com.baldev.twitterviewer.mvp.MainMVP.Presenter;
 import com.baldev.twitterviewer.mvp.MainMVP.View;
 import com.baldev.twitterviewer.views.adapters.TwitterListAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -28,7 +32,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements View, OnQueryTextListener {
 
-	@BindView(R.id.list_results) RecyclerView photoList;
+	@BindView(R.id.list_results) RecyclerView resultsList;
 	@BindView(R.id.swipe_refresh_layout) SwipeRefreshLayout swipeRefreshLayout;
 	@BindView(R.id.search) SearchView searchView;
 
@@ -47,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements View, OnQueryText
 		this.setupAdapter();
 		this.setupSearchView();
 		this.setupSwipeRefreshLayout();
-		//this.presenter.getTweetsBySearchTerm();
 	}
 
 	protected void setupComponent() {
@@ -72,19 +75,14 @@ public class MainActivity extends AppCompatActivity implements View, OnQueryText
 
 	private void setupAdapter() {
 		LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-		this.photoList.setLayoutManager(layoutManager);
-		this.photoList.setAdapter(this.adapter);
-		this.photoList.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+		this.resultsList.setLayoutManager(layoutManager);
+		this.resultsList.setAdapter(this.adapter);
+		this.resultsList.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
 			@Override
 			public void onLoadMore(int page, int totalItemsCount) {
-				loadMoreDataFromAPI(page);
 			}
 		});
 	}
-
-	private void loadMoreDataFromAPI(int page) {
-	}
-
 
 	private void setupSearchView() {
 		SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -94,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements View, OnQueryText
 
 	private void setupSwipeRefreshLayout() {
 		this.swipeRefreshLayout.setOnRefreshListener(this.presenter);
-		this.swipeRefreshLayout.setRefreshing(true);
 		this.swipeRefreshLayout.setColorSchemeColors(ContextCompat.getColor(this, R.color.colorPrimary));
 	}
 
@@ -105,19 +102,26 @@ public class MainActivity extends AppCompatActivity implements View, OnQueryText
 
 	@Override
 	public boolean onQueryTextChange(final String query) {
-		this.presenter.getTweetsBySearchTerm(query);
+		if (!this.swipeRefreshLayout.isRefreshing()) this.swipeRefreshLayout.setRefreshing(true);
+		if (query.equals("")) {
+			this.adapter.setTweets(new ArrayList<>());
+			this.adapter.notifyDataSetChanged();
+			this.swipeRefreshLayout.setRefreshing(false);
+		} else {
+			this.presenter.getTweetsBySearchTerm(query);
+		}
 		return true;
 	}
 
 	@Override
-	public void onLoadCompleted() {
-		Log.d("Test", "On Load Completed");
-		//TODO do something
+	public void onLoadCompleted(List<Tweet> tweets) {
+		this.adapter.setTweets(tweets);
+		this.adapter.notifyDataSetChanged();
+		this.swipeRefreshLayout.setRefreshing(false);
 	}
 
 	@Override
 	public void onLoadFailed() {
 		Log.d("Test", "On Load failed");
-		//TODO do something
 	}
 }

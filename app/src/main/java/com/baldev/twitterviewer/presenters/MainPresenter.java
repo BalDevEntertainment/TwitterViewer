@@ -74,8 +74,8 @@ public class MainPresenter implements MainMVP.Presenter {
 
 					@Override
 					public void onNext(SearchResponse searchResponse) {
-						Log.d("test", "on Next");
-						//handleSearchResults(cities);
+						List<Tweet> tweets = searchResponse.getStatuses();
+						view.onLoadCompleted(tweets);
 					}
 				});
 		subscriptions.add(subscription);

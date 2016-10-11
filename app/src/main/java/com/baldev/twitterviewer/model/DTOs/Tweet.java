@@ -17,6 +17,9 @@ public class Tweet {
 	@SerializedName("entities")
 	private Entities entity;
 
+	@SerializedName("user")
+	private TwitterUser user;
+
 	public List<Uri> getMediaUris() {
 		List<Uri> mediaUris = new ArrayList<>();
 		if (this.entity.hasMedia()) {
@@ -30,8 +33,15 @@ public class Tweet {
 		return mediaUris;
 	}
 
-	class Entities {
+	public TwitterUser getUser() {
+		return user;
+	}
 
+	public String getText() {
+		return text;
+	}
+
+	class Entities {
 		@SerializedName("media")
 		private List<TweetMedia> media;
 
@@ -55,6 +65,29 @@ public class Tweet {
 			boolean hasUrl() {
 				return this.url != null && !this.url.equals("");
 			}
+		}
+	}
+
+	public class TwitterUser {
+		@SerializedName("name")
+		private String name;
+
+		@SerializedName("screen_name")
+		private String screenName;
+
+		@SerializedName("profile_image_url")
+		private String pictureUrl;
+
+		public Uri getProfilePictureUri() {
+			return this.pictureUrl != null ? Uri.parse(this.pictureUrl) : null;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getScreenName() {
+			return screenName;
 		}
 	}
 }
