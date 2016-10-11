@@ -6,7 +6,7 @@ import com.baldev.twitterviewer.model.DTOs.Tweet;
 
 import java.util.List;
 
-public interface MainMVP {
+public interface TwitterFeedMVP {
 
 	interface View {
 		void onLoadCompleted(List<Tweet> tweets);

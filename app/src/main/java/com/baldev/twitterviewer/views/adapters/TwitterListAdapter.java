@@ -21,6 +21,10 @@ public class TwitterListAdapter extends RecyclerView.Adapter<TwitterViewHolder> 
 		this.tweets = tweets;
 	}
 
+	public List<Tweet> getTweets() {
+		return tweets;
+	}
+
 	@Override
 	public TwitterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_results_item, parent, false);

@@ -77,11 +77,14 @@
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/photo_tweet"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/photo_size"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/spacing_small"
-                android:visibility="gone"
+                android:visibility="visible"
+                app:actualImageScaleType="centerCrop"
                 app:placeholderImage="@drawable/placeholder_photo"
+                app:placeholderImageScaleType="centerCrop"
+                app:viewAspectRatio="1.775"
                 />
         </LinearLayout>
 
@@ -91,7 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginLeft="@dimen/spacing_small"
-        android:layout_marginTop="@dimen/spacing_normal"
         android:layout_marginRight="@dimen/spacing_small"
+        android:layout_marginTop="@dimen/spacing_normal"
         android:background="@color/backgroundColor"/>
 </LinearLayout>

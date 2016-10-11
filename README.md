@@ -9,15 +9,15 @@ TWITTER_API_KEY="the_provided_api_key"
 This is to avoid publishing the api key on a public repo.
 
 
-## [TODO]
-### MVP: Minimal viable product
+## MVP: Minimal viable product
+
+### [Finished]
 
 **- Support rotation of the phone without loosing any data on screen**
 
+_Used setRetainInstance()_
+
 **- Even though it sounds unnecessary; use a Fragment for the UI**
-
-
-## [Finished]
 
 **- Show the list of tweets listed by the based on the search term**
 
@@ -44,4 +44,5 @@ _7. Daimajia Androidanimations_
 _Used Retrofit with the Rest API provided by twitter._
 
 ### Optional
+
 **- Show the first image associated to a tweet**

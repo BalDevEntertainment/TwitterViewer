@@ -1,12 +1,11 @@
 package com.baldev.twitterviewer.modules;
 
 import android.app.Application;
-import android.content.Context;
 
 import com.baldev.twitterviewer.model.DataManager;
 import com.baldev.twitterviewer.mvp.DataModel;
-import com.baldev.twitterviewer.mvp.MainMVP.Presenter;
-import com.baldev.twitterviewer.mvp.MainMVP.View;
+import com.baldev.twitterviewer.mvp.TwitterFeedMVP.Presenter;
+import com.baldev.twitterviewer.mvp.TwitterFeedMVP.View;
 import com.baldev.twitterviewer.presenters.MainPresenter;
 import com.baldev.twitterviewer.views.adapters.TwitterListAdapter;
 

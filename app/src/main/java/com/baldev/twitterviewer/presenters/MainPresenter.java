@@ -6,8 +6,8 @@ import com.baldev.twitterviewer.model.DTOs.SearchResponse;
 import com.baldev.twitterviewer.model.DTOs.Tweet;
 import com.baldev.twitterviewer.model.DTOs.TwitterToken;
 import com.baldev.twitterviewer.mvp.DataModel;
-import com.baldev.twitterviewer.mvp.MainMVP;
-import com.baldev.twitterviewer.mvp.MainMVP.View;
+import com.baldev.twitterviewer.mvp.TwitterFeedMVP;
+import com.baldev.twitterviewer.mvp.TwitterFeedMVP.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
-public class MainPresenter implements MainMVP.Presenter {
+public class MainPresenter implements TwitterFeedMVP.Presenter {
 
 	private static final int DELAY = 400;
 
