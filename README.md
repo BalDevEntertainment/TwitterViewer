@@ -17,11 +17,6 @@ This is to avoid publishing the api key on a public repo.
 **- Even though it sounds unnecessary; use a Fragment for the UI**
 
 
-### Optional
-**- Show the first image associated to a tweet (or all of them if you want)**
-
-
-
 ## [Finished]
 
 **- Show the list of tweets listed by the based on the search term**
@@ -47,3 +42,6 @@ _7. Daimajia Androidanimations_
 **- You cannot use any Android Twitter SDK**
 
 _Used Retrofit with the Rest API provided by twitter._
+
+### Optional
+**- Show the first image associated to a tweet**
