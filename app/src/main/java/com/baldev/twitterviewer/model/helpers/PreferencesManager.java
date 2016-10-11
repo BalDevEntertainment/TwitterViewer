@@ -1,6 +1,5 @@
 package com.baldev.twitterviewer.model.helpers;
 
-
 import android.content.Context;
 
 public interface PreferencesManager {

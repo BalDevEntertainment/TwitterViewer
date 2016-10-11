@@ -12,6 +12,7 @@ import dagger.Component;
 @Component(
 		modules={AppModule.class, MainModule.class}
 )
+@SuppressWarnings("package")
 public interface MainComponent {
 	void inject(TwitterFeedFragment fragment);
 }

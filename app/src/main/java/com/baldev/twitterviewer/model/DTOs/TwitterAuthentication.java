@@ -16,10 +16,6 @@ public class TwitterAuthentication {
 		this.grantType = grantType.getValue();
 	}
 
-	public String getGrantType() {
-		return grantType;
-	}
-
 	public RequestBody getRequestBody() {
 		String text = String.format("%s=%s", KEY_GRANT_TYPE, this.grantType);
 		return RequestBody.create(MediaType.parse("text/plain"), text);

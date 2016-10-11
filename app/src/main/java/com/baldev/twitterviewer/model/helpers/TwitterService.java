@@ -1,6 +1,7 @@
 package com.baldev.twitterviewer.model.helpers;
 
 
+import com.baldev.twitterviewer.BuildConfig;
 import com.baldev.twitterviewer.model.DTOs.SearchResponse;
 import com.baldev.twitterviewer.model.DTOs.TwitterToken;
 
@@ -17,7 +18,7 @@ import rx.Single;
 public interface TwitterService {
 
 	@Headers({
-			"Authorization: Basic VnZsaFBJRE91dVA4RU9HNWJZdTU4NGlrejo5MlcyMVVsTjJRTkhmZzhEZDNuUzFPWkRkcVhzNzBydEM0dE93SkxObjBzc2RlaWxFbw==",
+			"Authorization: Basic " + BuildConfig.TWITTER_API_KEY,
 			"Content-Type: application/x-www-form-urlencoded;charset=UTF-8"
 	})
 	@POST("oauth2/token")

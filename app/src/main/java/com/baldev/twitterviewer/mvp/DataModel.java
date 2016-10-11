@@ -11,7 +11,7 @@ import rx.Single;
 
 public interface DataModel {
 
-	Single<TwitterToken> askForAccessToken();
+	Single<TwitterToken> retrieveStoredAccessToken();
 
 	Single<TwitterToken> authenticate();
 

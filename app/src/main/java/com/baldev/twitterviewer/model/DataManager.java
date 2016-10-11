@@ -43,7 +43,7 @@ public class DataManager implements DataModel {
 	}
 
 	@Override
-	public Single<TwitterToken> askForAccessToken() {
+	public Single<TwitterToken> retrieveStoredAccessToken() {
 		String accessToken = preferencesManager.getAccessToken(this.context);
 		TwitterToken value = TwitterToken.bearerToken(accessToken);
 		return Single.just(value);
@@ -102,12 +102,10 @@ public class DataManager implements DataModel {
 	}
 
 	private TwitterToken getAccessToken() {
-		//Get token
-		return this.askForAccessToken()
-				.subscribeOn(Schedulers.computation()) //Check this
-				//Get Access Token;
-				.flatMap(accessToken ->
-						accessToken.getAccessToken() == null ?
+		//Try to retrieve stored access token.
+		return this.retrieveStoredAccessToken()
+				.subscribeOn(Schedulers.computation())
+				.flatMap(accessToken -> accessToken.getAccessToken() == null ?
 								//Not cached, authenticate.
 								authenticate()
 										//Save access token on the shared preferences.
