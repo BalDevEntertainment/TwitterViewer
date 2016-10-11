@@ -1,5 +1,6 @@
 package com.baldev.twitterviewer.mvp;
 
+import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 
 public interface MainMVP {
@@ -13,6 +14,6 @@ public interface MainMVP {
 		@Override
 		void onRefresh();
 
-		void authenticate();
+		void getTweets();
 	}
 }

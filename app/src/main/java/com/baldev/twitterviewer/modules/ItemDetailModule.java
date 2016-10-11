@@ -1,5 +1,8 @@
 package com.baldev.twitterviewer.modules;
 
+import android.app.Application;
+import android.content.Context;
+
 import com.baldev.twitterviewer.model.DataManager;
 import com.baldev.twitterviewer.mvp.DataModel;
 import com.baldev.twitterviewer.mvp.ItemDetailMVP;
@@ -26,8 +29,8 @@ public class ItemDetailModule {
 
 	@Provides
 	@Singleton
-	public DataModel provideModel() {
-		return new DataManager();
+	public DataModel provideModel(Application context) {
+		return new DataManager(context);
 	}
 
 	@Provides

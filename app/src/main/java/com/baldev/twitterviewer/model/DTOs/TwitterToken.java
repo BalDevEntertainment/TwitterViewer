@@ -2,6 +2,7 @@ package com.baldev.twitterviewer.model.DTOs;
 
 import com.google.gson.annotations.SerializedName;
 
+
 public class TwitterToken {
 
 	@SerializedName("token_type")
@@ -9,6 +10,16 @@ public class TwitterToken {
 
 	@SerializedName("access_token")
 	private String accessToken;
+
+	private TwitterToken(String tokenType, String accessToken) {
+		this.tokenType = tokenType;
+		this.accessToken = accessToken;
+	}
+
+	public static TwitterToken bearerToken(String accessToken) {
+		String tokenType = TokenType.BEARER.getValue();
+		return new TwitterToken(tokenType, accessToken);
+	}
 
 	public TokenType getTokenType() {
 		return TokenType.getFromValue(this.tokenType);

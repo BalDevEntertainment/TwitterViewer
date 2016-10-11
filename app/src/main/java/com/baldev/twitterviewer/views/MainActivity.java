@@ -13,6 +13,7 @@ import android.support.v7.widget.SearchView.OnQueryTextListener;
 
 import com.baldev.twitterviewer.R;
 import com.baldev.twitterviewer.components.DaggerMainComponent;
+import com.baldev.twitterviewer.modules.AppModule;
 import com.baldev.twitterviewer.modules.MainModule;
 import com.baldev.twitterviewer.mvp.MainMVP.Presenter;
 import com.baldev.twitterviewer.mvp.MainMVP.View;
@@ -45,12 +46,13 @@ public class MainActivity extends AppCompatActivity implements View, OnQueryText
 		this.setupAdapter();
 		this.setupSearchView();
 		this.setupSwipeRefreshLayout();
-		this.presenter.authenticate();
+		this.presenter.getTweets();
 	}
 
 	protected void setupComponent() {
 		DaggerMainComponent.builder()
 				.mainModule(new MainModule(this))
+				.appModule(new AppModule(this.getApplication()))
 				.build()
 				.inject(this);
 	}

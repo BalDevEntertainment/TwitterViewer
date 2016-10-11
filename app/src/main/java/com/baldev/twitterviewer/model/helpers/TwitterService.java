@@ -6,10 +6,12 @@ import com.baldev.twitterviewer.model.DTOs.TwitterToken;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
+import rx.Single;
 
 public interface TwitterService {
 
@@ -18,9 +20,9 @@ public interface TwitterService {
 			"Content-Type: application/x-www-form-urlencoded;charset=UTF-8"
 	})
 	@POST("oauth2/token")
-	Observable<TwitterToken> authenticate(@Body RequestBody twitterAuthentication);
+	Single<TwitterToken> authenticate(@Body RequestBody twitterAuthentication);
 
 	@GET("1.1/search/tweets.json")
-	Observable<Object> getSomething(@Query("method") String method, @Query("api_key") String apiKey, @Query("page") int page);
+	Observable<Object> getSomething(@Header("Authorization") String accessToken, @Query("method") String method, @Query("api_key") String apiKey);
 
 }

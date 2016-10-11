@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.baldev.twitterviewer.R;
 import com.baldev.twitterviewer.components.DaggerItemDetailComponent;
+import com.baldev.twitterviewer.modules.AppModule;
 import com.baldev.twitterviewer.modules.ItemDetailModule;
 import com.baldev.twitterviewer.mvp.ItemDetailMVP;
 import com.baldev.twitterviewer.mvp.ItemDetailMVP.Presenter;
@@ -58,6 +59,7 @@ public class ItemDetailActivity extends AppCompatActivity implements ItemDetailM
 	protected void setupComponent() {
 		DaggerItemDetailComponent.builder()
 				.itemDetailModule(new ItemDetailModule(this))
+				.appModule(new AppModule(this.getApplication()))
 				.build()
 				.inject(this);
 	}
