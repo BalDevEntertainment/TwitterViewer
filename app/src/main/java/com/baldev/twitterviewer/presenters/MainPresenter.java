@@ -1,6 +1,5 @@
 package com.baldev.twitterviewer.presenters;
 
-import com.baldev.twitterviewer.model.DTOs.SearchResponse;
 import com.baldev.twitterviewer.model.DTOs.Tweet;
 import com.baldev.twitterviewer.mvp.DataModel;
 import com.baldev.twitterviewer.mvp.TwitterFeedMVP;
@@ -12,14 +11,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import rx.Notification;
-import rx.Observable;
-import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
@@ -29,9 +22,9 @@ public class MainPresenter implements TwitterFeedMVP.Presenter {
 
 	private final View view;
 	private final DataModel dataModel;
-	private List<Subscription> subscriptions = new ArrayList<>();
 	//TODO inject this
 	private PublishSubject<String> searchResultsSubject = PublishSubject.create();
+	private List<Subscription> subscriptions = new ArrayList<>();
 
 	@Inject
 	public MainPresenter(View view, DataModel dataModel) {
@@ -59,15 +52,19 @@ public class MainPresenter implements TwitterFeedMVP.Presenter {
 		this.dataModel.storeDataToRetain(tweets, lastSearch);
 	}
 
+	@Override
+	public void onRefresh() {
+		this.getTweetsBySearchTerm(this.view.getSearchQuery());
+	}
+
 	private void setupSearch() {
 		final Subscription subscription = searchResultsSubject
 				//wait a little bit to avoid server overhead.
 				.debounce(SEARCH_DELAY, TimeUnit.MILLISECONDS)
+				//Show loading dialog
 				.observeOn(AndroidSchedulers.mainThread())
 				.map(searchTerm -> {
-					if (this.dataModel.needsUpdate(searchTerm)) {
-						view.startLoading();
-					}
+					this.showLoadIfNeeded(searchTerm);
 					return searchTerm;
 				})
 				.observeOn(Schedulers.io())
@@ -75,26 +72,16 @@ public class MainPresenter implements TwitterFeedMVP.Presenter {
 				.flatMap(dataModel::getTweetsBySearchTerm)
 				//Update UI
 				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(new Observer<SearchResponse>() {
-					@Override
-					public void onCompleted() {
-					}
-
-					@Override
-					public void onError(Throwable e) {
-					}
-
-					@Override
-					public void onNext(SearchResponse searchResponse) {
-						List<Tweet> tweets = searchResponse.getStatuses();
-						view.onLoadCompleted(tweets);
-					}
+				//Notify the view that new data has been retrieved.
+				.subscribe(searchResponse -> {
+					view.onNewData(searchResponse.getStatuses());
 				});
 		subscriptions.add(subscription);
 	}
 
-	@Override
-	public void onRefresh() {
-		//TODO reload information.
+	private void showLoadIfNeeded(String searchTerm) {
+		if (this.dataModel.needsUpdate(searchTerm)) {
+			view.startLoading();
+		}
 	}
 }

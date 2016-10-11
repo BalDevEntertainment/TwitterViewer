@@ -16,7 +16,6 @@ public class TwitterListAdapter extends RecyclerView.Adapter<TwitterViewHolder> 
 
 	private List<Tweet> tweets = new ArrayList<>();
 
-	//TODO temporal for testing, replace
 	public void setTweets(List<Tweet> tweets) {
 		this.tweets = tweets;
 	}

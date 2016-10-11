@@ -4,6 +4,7 @@ package com.baldev.twitterviewer.views;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -12,7 +13,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +26,6 @@ import com.baldev.twitterviewer.mvp.TwitterFeedMVP;
 import com.baldev.twitterviewer.mvp.TwitterFeedMVP.Presenter;
 import com.baldev.twitterviewer.views.adapters.TwitterListAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -121,24 +120,26 @@ public class TwitterFeedFragment extends Fragment implements TwitterFeedMVP.View
 	}
 
 	@Override
-	public void onLoadCompleted(List<Tweet> tweets) {
+	public void onNewData(List<Tweet> tweets) {
 		this.adapter.setTweets(tweets);
 		this.adapter.notifyDataSetChanged();
 		this.swipeRefreshLayout.setRefreshing(false);
 	}
 
 	@Override
-	public void onLoadFailed() {
-		Log.d("Test", "On Load failed");
-	}
-
-	@Override
 	public void startLoading() {
-		if (!this.swipeRefreshLayout.isRefreshing())
+		if (!this.swipeRefreshLayout.isRefreshing()){
 			this.swipeRefreshLayout.setRefreshing(true);
+		}
 	}
 
 	public void storeDataToRetain() {
-		this.presenter.storeDataToRetain(this.adapter.getTweets(), this.searchView.getQuery().toString());
+		this.presenter.storeDataToRetain(this.adapter.getTweets(), getSearchQuery());
+	}
+
+	@NonNull
+	public String
+	getSearchQuery() {
+		return this.searchView.getQuery().toString();
 	}
 }

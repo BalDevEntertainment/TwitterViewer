@@ -1,5 +1,6 @@
 package com.baldev.twitterviewer.mvp;
 
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 
 import com.baldev.twitterviewer.model.DTOs.Tweet;
@@ -9,18 +10,19 @@ import java.util.List;
 public interface TwitterFeedMVP {
 
 	interface View {
-		void onLoadCompleted(List<Tweet> tweets);
-
-		void onLoadFailed();
+		@NonNull
+		String getSearchQuery();
 
 		void startLoading();
+
+		void onNewData(List<Tweet> tweets);
 	}
 
 	interface Presenter extends OnRefreshListener {
-		void unsubscribe();
-
 		@Override
 		void onRefresh();
+
+		void unsubscribe();
 
 		void getTweetsBySearchTerm(String searchTerm);
 
