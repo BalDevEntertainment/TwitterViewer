@@ -12,6 +12,8 @@ public interface TwitterFeedMVP {
 		void onLoadCompleted(List<Tweet> tweets);
 
 		void onLoadFailed();
+
+		void startLoading();
 	}
 
 	interface Presenter extends OnRefreshListener {
@@ -21,5 +23,7 @@ public interface TwitterFeedMVP {
 		void onRefresh();
 
 		void getTweetsBySearchTerm(String searchTerm);
+
+		void storeDataToRetain(List<Tweet> tweets, String query);
 	}
 }

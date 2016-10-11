@@ -46,13 +46,12 @@ public class TwitterFeedFragment extends Fragment implements TwitterFeedMVP.View
 
 	@Inject
 	TwitterListAdapter adapter;
-	private List<Tweet> retainedTweets;
-	private String lastSearch = "";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setRetainInstance(true);
+		this.setupComponent();
 	}
 
 	@Nullable
@@ -61,7 +60,6 @@ public class TwitterFeedFragment extends Fragment implements TwitterFeedMVP.View
 		super.onCreateView(inflater, container, savedInstanceState);
 		View view = inflater.inflate(R.layout.fragment_twitter_feed, container, false);
 		ButterKnife.bind(this, view);
-		this.setupComponent();
 		this.setupAdapter();
 		this.setupSearchView();
 		this.setupSwipeRefreshLayout();
@@ -95,6 +93,7 @@ public class TwitterFeedFragment extends Fragment implements TwitterFeedMVP.View
 		this.resultsList.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
 			@Override
 			public void onLoadMore(int page, int totalItemsCount) {
+				//TODO Implement for pagination.
 			}
 		});
 	}
@@ -117,22 +116,7 @@ public class TwitterFeedFragment extends Fragment implements TwitterFeedMVP.View
 
 	@Override
 	public boolean onQueryTextChange(final String query) {
-		//TODO Improve this method
-		if (query.equals("")) { // Maybe put this inside getTweetsBySearch to improve readability.
-			this.adapter.setTweets(new ArrayList<>());
-			this.adapter.notifyDataSetChanged();
-			this.swipeRefreshLayout.setRefreshing(false);
-		} else {
-			if (this.lastSearch.equals(query)) {
-				this.adapter.setTweets(this.retainedTweets);
-				this.adapter.notifyDataSetChanged();
-				this.swipeRefreshLayout.setRefreshing(false);
-				this.lastSearch = "";
-			} else {
-				if (!this.swipeRefreshLayout.isRefreshing()) this.swipeRefreshLayout.setRefreshing(true);
-				this.presenter.getTweetsBySearchTerm(query);
-			}
-		}
+		this.presenter.getTweetsBySearchTerm(query);
 		return true;
 	}
 
@@ -148,16 +132,13 @@ public class TwitterFeedFragment extends Fragment implements TwitterFeedMVP.View
 		Log.d("Test", "On Load failed");
 	}
 
+	@Override
+	public void startLoading() {
+		if (!this.swipeRefreshLayout.isRefreshing())
+			this.swipeRefreshLayout.setRefreshing(true);
+	}
+
 	public void storeDataToRetain() {
-		this.retainedTweets = this.adapter.getTweets();
-		this.lastSearch = this.searchView.getQuery().toString();
-	}
-
-	public List<Tweet> getRetainedTweets() {
-		return this.retainedTweets;
-	}
-
-	public String getLastSearch() {
-		return this.lastSearch;
+		this.presenter.storeDataToRetain(this.adapter.getTweets(), this.searchView.getQuery().toString());
 	}
 }

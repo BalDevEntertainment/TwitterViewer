@@ -1,10 +1,7 @@
 package com.baldev.twitterviewer.presenters;
 
-import android.util.Log;
-
 import com.baldev.twitterviewer.model.DTOs.SearchResponse;
 import com.baldev.twitterviewer.model.DTOs.Tweet;
-import com.baldev.twitterviewer.model.DTOs.TwitterToken;
 import com.baldev.twitterviewer.mvp.DataModel;
 import com.baldev.twitterviewer.mvp.TwitterFeedMVP;
 import com.baldev.twitterviewer.mvp.TwitterFeedMVP.View;
@@ -15,16 +12,20 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import rx.Notification;
+import rx.Observable;
 import rx.Observer;
-import rx.Single;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
 public class MainPresenter implements TwitterFeedMVP.Presenter {
 
-	private static final int DELAY = 400;
+	private static final int SEARCH_DELAY = 400;
 
 	private final View view;
 	private final DataModel dataModel;
@@ -53,17 +54,28 @@ public class MainPresenter implements TwitterFeedMVP.Presenter {
 		}
 	}
 
+	@Override
+	public void storeDataToRetain(List<Tweet> tweets, String lastSearch) {
+		this.dataModel.storeDataToRetain(tweets, lastSearch);
+	}
+
 	private void setupSearch() {
 		final Subscription subscription = searchResultsSubject
 				//wait a little bit to avoid server overhead.
-				.debounce(DELAY, TimeUnit.MILLISECONDS)
+				.debounce(SEARCH_DELAY, TimeUnit.MILLISECONDS)
+				.observeOn(AndroidSchedulers.mainThread())
+				.map(searchTerm -> {
+					if (this.dataModel.needsUpdate(searchTerm)) {
+						view.startLoading();
+					}
+					return searchTerm;
+				})
 				.observeOn(Schedulers.io())
 				//Get tweets by search term.
-				.flatMap(searchTerm -> dataModel.getTweetsBySearchTerm(getAccessToken(), searchTerm))
+				.flatMap(dataModel::getTweetsBySearchTerm)
 				//Update UI
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe(new Observer<SearchResponse>() {
-
 					@Override
 					public void onCompleted() {
 					}
@@ -81,24 +93,8 @@ public class MainPresenter implements TwitterFeedMVP.Presenter {
 		subscriptions.add(subscription);
 	}
 
-	private TwitterToken getAccessToken() {
-		//Get token
-		return this.dataModel.getAccessToken()
-				.subscribeOn(Schedulers.computation()) //Check this
-				//Get Access Token;
-				.flatMap(accessToken ->
-						accessToken.getAccessToken() == null ?
-								//Not cached, authenticate.
-								dataModel.authenticate()
-										//Save access token on the shared preferences.
-										.doOnSuccess(twitterToken -> dataModel.saveAccessToken(twitterToken.getAccessToken()))
-								//Return cached access token
-								: Single.just(accessToken))
-				.toBlocking()
-				.value();
-	}
-
 	@Override
 	public void onRefresh() {
+		//TODO reload information.
 	}
 }
