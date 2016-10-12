@@ -1,4 +1,18 @@
-# TwitterViewer
+# Exercise 1: OLX Improvements
+
+- Change the "Sell" floating button, the behaviour looks weird if you scroll only a little.
+
+- On Profile, my favorites the button "Sell" disappears, i don't know if it's a bug or not, but looks weird.
+
+- The following bug happened to me after going back and forth through numerous screens:
+
+http://i63.tinypic.com/anbslv.png
+
+There's an empty space on the grid view.
+
+- I would probably change the size of the categories top bar, since on landscape mode takes too much screen.
+
+# Exercise 2: TwitterViewer
 
 ## [IMPORTANT]
 
