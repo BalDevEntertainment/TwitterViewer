@@ -1,6 +1,5 @@
 package com.baldev.twitterviewer.views;
 
-
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -122,7 +121,7 @@ public class TwitterFeedFragment extends Fragment implements TwitterFeedMVP.View
 
 	@Override
 	public void startLoading() {
-		if (!this.swipeRefreshLayout.isRefreshing()){
+		if (!this.swipeRefreshLayout.isRefreshing()) {
 			this.swipeRefreshLayout.setRefreshing(true);
 		}
 	}
@@ -132,8 +131,7 @@ public class TwitterFeedFragment extends Fragment implements TwitterFeedMVP.View
 	}
 
 	@NonNull
-	public String
-	getSearchQuery() {
+	public String getSearchQuery() {
 		return this.searchView.getQuery().toString();
 	}
 }

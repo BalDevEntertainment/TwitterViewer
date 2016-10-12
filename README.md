@@ -4,9 +4,9 @@
 
 Create a file called secrets.properties with the following structure:
 
-TWITTER_API_KEY="the_provided_api_key"
+TWITTER_API_KEY="your_base_64_encoded_key"
 
-This is to avoid publishing the api key on a public repo.
+This is to avoid publishing the api key on a repo.
 
 
 ## MVP: Minimal viable product
@@ -23,6 +23,8 @@ _Used setRetainInstance()_
 
 **- Have the app support Android OS 2.3 and up (API 10)**
 
+_Tested on Google Nexus One - 2.3.7 - API 10 - 480x800_
+
 **- Third party libraries.**
 
 _1. Butterknife_
@@ -37,7 +39,7 @@ _5. RxJava_
 
 _6. Fresco_
 
-_7. Daimajia Androidanimations_
+_7. RetroLambda_
     
 **- You cannot use any Android Twitter SDK**
 

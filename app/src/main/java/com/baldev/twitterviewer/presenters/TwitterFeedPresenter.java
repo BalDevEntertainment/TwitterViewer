@@ -22,7 +22,6 @@ public class TwitterFeedPresenter implements TwitterFeedMVP.Presenter {
 
 	private final View view;
 	private final DataModel dataModel;
-	//TODO inject this
 	private PublishSubject<String> searchResultsSubject = PublishSubject.create();
 	private List<Subscription> subscriptions = new ArrayList<>();
 
