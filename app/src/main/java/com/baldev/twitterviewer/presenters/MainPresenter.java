@@ -1,87 +1,24 @@
 package com.baldev.twitterviewer.presenters;
 
-import com.baldev.twitterviewer.model.DTOs.Tweet;
-import com.baldev.twitterviewer.mvp.DataModel;
+import com.baldev.twitterviewer.mvp.MainActivityMVP;
+import com.baldev.twitterviewer.mvp.MainActivityMVP.View;
 import com.baldev.twitterviewer.mvp.TwitterFeedMVP;
-import com.baldev.twitterviewer.mvp.TwitterFeedMVP.View;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
-
-public class MainPresenter implements TwitterFeedMVP.Presenter {
-
-	private static final int SEARCH_DELAY = 400;
+public class MainPresenter implements MainActivityMVP.Presenter {
 
 	private final View view;
-	private final DataModel dataModel;
-	//TODO inject this
-	private PublishSubject<String> searchResultsSubject = PublishSubject.create();
-	private List<Subscription> subscriptions = new ArrayList<>();
+
+	TwitterFeedMVP.View twitterFeedView;
 
 	@Inject
-	public MainPresenter(View view, DataModel dataModel) {
+	public MainPresenter(View view, TwitterFeedMVP.View twitterFeedView) {
 		this.view = view;
-		this.dataModel = dataModel;
-		this.setupSearch();
+		this.twitterFeedView = twitterFeedView;
 	}
 
-	@Override
-	public void getTweetsBySearchTerm(final String searchTerm) {
-		this.searchResultsSubject.onNext(searchTerm);
-	}
-
-	@Override
-	public void unsubscribe() {
-		for (Subscription subscription : subscriptions) {
-			if (!subscription.isUnsubscribed()) {
-				subscription.unsubscribe();
-			}
-		}
-	}
-
-	@Override
-	public void storeDataToRetain(List<Tweet> tweets, String lastSearch) {
-		this.dataModel.storeDataToRetain(tweets, lastSearch);
-	}
-
-	@Override
-	public void onRefresh() {
-		this.getTweetsBySearchTerm(this.view.getSearchQuery());
-	}
-
-	private void setupSearch() {
-		final Subscription subscription = searchResultsSubject
-				//wait a little bit to avoid server overhead.
-				.debounce(SEARCH_DELAY, TimeUnit.MILLISECONDS)
-				//Show loading dialog
-				.observeOn(AndroidSchedulers.mainThread())
-				.map(searchTerm -> {
-					this.showLoadIfNeeded(searchTerm);
-					return searchTerm;
-				})
-				.observeOn(Schedulers.io())
-				//Get tweets by search term.
-				.flatMap(dataModel::getTweetsBySearchTerm)
-				//Update UI
-				.observeOn(AndroidSchedulers.mainThread())
-				//Notify the view that new data has been retrieved.
-				.subscribe(searchResponse -> {
-					view.onNewData(searchResponse.getStatuses());
-				});
-		subscriptions.add(subscription);
-	}
-
-	private void showLoadIfNeeded(String searchTerm) {
-		if (this.dataModel.needsUpdate(searchTerm)) {
-			view.startLoading();
-		}
+	public void storeDataToRetain() {
+		twitterFeedView.storeDataToRetain();
 	}
 }

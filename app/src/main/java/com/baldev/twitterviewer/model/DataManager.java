@@ -26,8 +26,6 @@ import rx.schedulers.Schedulers;
 @Singleton
 public class DataManager implements DataModel {
 
-	private static final String API_KEY = BuildConfig.TWITTER_API_KEY; //Change for provided API KEY, used to avoid publishing API key on repository.
-
 	//TODO inject dependencies
 	private static TwitterService twitterService = TwitterAPIHelper.getInstance().create(TwitterService.class);
 	private static PreferencesManager preferencesManager = SharedPreferencesManager.getInstance();

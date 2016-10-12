@@ -18,10 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.baldev.twitterviewer.R;
-import com.baldev.twitterviewer.components.DaggerMainComponent;
+import com.baldev.twitterviewer.components.DaggerTwitterFeedComponent;
 import com.baldev.twitterviewer.model.DTOs.Tweet;
 import com.baldev.twitterviewer.modules.AppModule;
-import com.baldev.twitterviewer.modules.MainModule;
+import com.baldev.twitterviewer.modules.TwitterFeedModule;
 import com.baldev.twitterviewer.mvp.TwitterFeedMVP;
 import com.baldev.twitterviewer.mvp.TwitterFeedMVP.Presenter;
 import com.baldev.twitterviewer.views.adapters.TwitterListAdapter;
@@ -66,8 +66,8 @@ public class TwitterFeedFragment extends Fragment implements TwitterFeedMVP.View
 	}
 
 	protected void setupComponent() {
-		DaggerMainComponent.builder()
-				.mainModule(new MainModule(this))
+		DaggerTwitterFeedComponent.builder()
+				.twitterFeedModule(new TwitterFeedModule(this))
 				.appModule(new AppModule(this.getActivity().getApplication()))
 				.build()
 				.inject(this);
@@ -89,12 +89,6 @@ public class TwitterFeedFragment extends Fragment implements TwitterFeedMVP.View
 		LinearLayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
 		this.resultsList.setLayoutManager(layoutManager);
 		this.resultsList.setAdapter(this.adapter);
-		this.resultsList.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
-			@Override
-			public void onLoadMore(int page, int totalItemsCount) {
-				//TODO Implement for pagination.
-			}
-		});
 	}
 
 	private void setupSearchView() {

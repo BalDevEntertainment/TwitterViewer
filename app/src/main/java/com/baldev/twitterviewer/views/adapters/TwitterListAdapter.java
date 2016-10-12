@@ -51,4 +51,5 @@ public class TwitterListAdapter extends RecyclerView.Adapter<TwitterViewHolder> 
 	public int getItemCount() {
 		return tweets.size();
 	}
+
 }
